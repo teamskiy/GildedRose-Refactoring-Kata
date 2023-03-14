@@ -18,7 +18,7 @@ class GildedRoseTest {
 
     @Test
     void givenBackstagePassItemWithMoreThan10DaysSellIn_whenUpdateQualityOnce_thenQualityIncreased() {
-        String itemName = "Backstage passes to a TAFKAL80ETC concert";
+        String itemName = "Backstage passes to a Three Days Grace concert";
         int quality = 0;
         int sellIn = 11;
         Item[] items = new Item[] { new Item(itemName, sellIn, quality) };
@@ -33,7 +33,7 @@ class GildedRoseTest {
 
     @Test
     void givenBackstagePassItemWithMoreThan5DaysButLessThan10DaysSellIn_whenUpdateQualityOnce_thenQualityIncreasedByTwo() {
-        String itemName = "Backstage passes to a TAFKAL80ETC concert";
+        String itemName = "Backstage passes to a J.Cole concert";
         int quality = 0;
         int sellIn = 7;
         Item[] items = new Item[] { new Item(itemName, sellIn, quality) };
@@ -48,7 +48,7 @@ class GildedRoseTest {
 
     @Test
     void givenBackstagePassItemWithMoreThan0DaysButLessThan5DaysSellIn_whenUpdateQualityOnce_thenQualityIncreasedByThree() {
-        String itemName = "Backstage passes to a TAFKAL80ETC concert";
+        String itemName = "Backstage passes to a Asap Rocky concert";
         int quality = 0;
         int sellIn = 1;
         Item[] items = new Item[] { new Item(itemName, sellIn, quality) };
@@ -64,7 +64,7 @@ class GildedRoseTest {
     @Test
     void givenBackstagePassItemThatIsPassingItsSellDate_whenUpdateQualityFor100Days_thenQualityIsAlways0() {
         String itemName = "Backstage passes to a TAFKAL80ETC concert";
-        int quality = 1000;
+        int quality = 50;
         int sellIn = 0;
         Item[] items = new Item[] { new Item(itemName, sellIn, quality) };
 
@@ -101,7 +101,7 @@ class GildedRoseTest {
 
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        
+
         assertEquals(itemName, app.items[0].name);
         assertEquals(sellIn - 1, app.items[0].sellIn);
         assertEquals(quality + 2, app.items[0].quality);
