@@ -2,6 +2,8 @@ package com.gildedrose;
 
 import org.junit.jupiter.api.Test;
 
+import static com.gildedrose.GildedRose.MAX_QUALITY;
+import static com.gildedrose.GildedRose.MIN_QUALITY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GildedRoseTest {
@@ -62,7 +64,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void givenBackstagePassItemThatIsPassingItsSellDate_whenUpdateQualityFor100Days_thenQualityIsAlways0() {
+    void givenBackstagePassItemThatIsPassingItsSellDate_whenUpdateQualityFor100Days_thenQualityIsAlwaysAtMinQuality() {
         String itemName = "Backstage passes to a TAFKAL80ETC concert";
         int quality = 50;
         int sellIn = 0;
@@ -71,7 +73,7 @@ class GildedRoseTest {
         GildedRose app = new GildedRose(items);
         for (int day = 0; day < 100; ++day) {
             app.updateQuality();
-            assertEquals(0, app.items[0].quality);
+            assertEquals(MIN_QUALITY, app.items[0].quality);
         }
         assertEquals(itemName, app.items[0].name);
         assertEquals(sellIn - 100, app.items[0].sellIn);
@@ -108,7 +110,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void givenItemThatIncreasesTheQualityWithAge_whenUpdateQualityFor100Days_thenQualityIsCappedAt50() {
+    void givenItemThatIncreasesTheQualityWithAge_whenUpdateQualityFor100Days_thenQualityIsCappedAtMaxQuality() {
         String itemName = "Aged Brie";
         int quality = 0;
         int sellIn = 5;
@@ -120,7 +122,7 @@ class GildedRoseTest {
         }
         assertEquals(itemName, app.items[0].name);
         assertEquals(sellIn - 100, app.items[0].sellIn);
-        assertEquals(50, app.items[0].quality);
+        assertEquals(MAX_QUALITY, app.items[0].quality);
     }
 
     @Test
