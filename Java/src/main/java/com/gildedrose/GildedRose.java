@@ -1,5 +1,8 @@
 package com.gildedrose;
 
+import static com.gildedrose.ItemGroup.INCREASES_IN_QUALITY_WITH_AGE;
+import static com.gildedrose.ItemGroup.getItemGroup;
+
 class GildedRose {
     Item[] items;
 
@@ -9,39 +12,40 @@ class GildedRose {
 
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
-            if (!items[i].name.equals("Aged Brie")
-                    && !items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (items[i].quality > 0) {
-                    if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                        items[i].quality = items[i].quality - 1;
-                    }
-                }
+            if (getItemGroup(items[i].name) == INCREASES_IN_QUALITY_WITH_AGE) {
+                updateItemThatIncreasesQualityWithAge(i);
             } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1;
-
-                    if (items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
+                if (!items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+                    if (items[i].quality > 0) {
+                        if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
+                            items[i].quality = items[i].quality - 1;
                         }
+                    }
+                } else {
+                    if (items[i].quality < 50) {
+                        items[i].quality = items[i].quality + 1;
 
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
+                        if (items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+                            if (items[i].sellIn < 11) {
+                                if (items[i].quality < 50) {
+                                    items[i].quality = items[i].quality + 1;
+                                }
+                            }
+
+                            if (items[i].sellIn < 6) {
+                                if (items[i].quality < 50) {
+                                    items[i].quality = items[i].quality + 1;
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                items[i].sellIn = items[i].sellIn - 1;
-            }
+                if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
+                    items[i].sellIn = items[i].sellIn - 1;
+                }
 
-            if (items[i].sellIn < 0) {
-                if (!items[i].name.equals("Aged Brie")) {
+                if (items[i].sellIn < 0) {
                     if (!items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
                         if (items[i].quality > 0) {
                             if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
@@ -51,11 +55,21 @@ class GildedRose {
                     } else {
                         items[i].quality = items[i].quality - items[i].quality;
                     }
-                } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1;
-                    }
                 }
+            }
+        }
+    }
+
+    private void updateItemThatIncreasesQualityWithAge(int i) {
+        if (items[i].quality < 50) {
+            items[i].quality = items[i].quality + 1;
+        }
+
+        items[i].sellIn = items[i].sellIn - 1;
+
+        if (items[i].sellIn < 0) {
+            if (items[i].quality < 50) {
+                items[i].quality = items[i].quality + 1;
             }
         }
     }
