@@ -18,17 +18,7 @@ class GildedRose {
             } else if (getItemGroup(items[i].name) == LEGENDARY) {
                 updateLegendaryItem(i);
             } else {
-                if (items[i].quality > 0) {
-                    items[i].quality = items[i].quality - 1;
-                }
-
-                items[i].sellIn = items[i].sellIn - 1;
-
-                if (items[i].sellIn < 0) {
-                    if (items[i].quality > 0) {
-                        items[i].quality = items[i].quality - 1;
-                    }
-                }
+                updateRegularItem(i);
             }
         }
     }
@@ -79,5 +69,19 @@ class GildedRose {
          * need to update this method, but as for now
          * them legendary items just keep their props the same
          */
+    }
+
+    private void updateRegularItem(int i) {
+        if (items[i].quality > 0) {
+            items[i].quality = items[i].quality - 1;
+        }
+
+        items[i].sellIn = items[i].sellIn - 1;
+
+        if (items[i].sellIn < 0) {
+            if (items[i].quality > 0) {
+                items[i].quality = items[i].quality - 1;
+            }
+        }
     }
 }
