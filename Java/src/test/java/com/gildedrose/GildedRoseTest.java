@@ -171,4 +171,34 @@ class GildedRoseTest {
         assertEquals(sellIn - 1, app.items[0].sellIn);
         assertEquals(quality - 2, app.items[0].quality);
     }
+
+    @Test
+    void givenConjuredItemBeforeItsSellDate_whenUpdateQualityOnce_thenQualityDecreasedByTwo() {
+        String itemName = "Conjured scissors";
+        int quality = 5;
+        int sellIn = 5;
+        Item[] items = new Item[] { new Item(itemName, sellIn, quality) };
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(itemName, app.items[0].name);
+        assertEquals(sellIn - 1, app.items[0].sellIn);
+        assertEquals(quality - 2, app.items[0].quality);
+    }
+
+    @Test
+    void givenRegularItemPassingItsSellDate_whenUpdateQualityOnce_thenQualityDecreasedByFour() {
+        String itemName = "Conjured ball";
+        int quality = 5;
+        int sellIn = 0;
+        Item[] items = new Item[] { new Item(itemName, sellIn, quality) };
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(itemName, app.items[0].name);
+        assertEquals(sellIn - 1, app.items[0].sellIn);
+        assertEquals(quality - 4, app.items[0].quality);
+    }
 }

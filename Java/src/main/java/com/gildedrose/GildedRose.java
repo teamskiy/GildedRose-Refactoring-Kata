@@ -24,6 +24,9 @@ class GildedRose {
                 case LEGENDARY:
                     updateLegendaryItem(i);
                     break;
+                case CONJURED:
+                    updateConjuredItem(i);
+                    break;
                 case REGULAR:
                     updateRegularItem(i);
                     break;
@@ -74,6 +77,16 @@ class GildedRose {
 
         if (items[i].sellIn < 0) {
             changeQualityOfItemBy(i, -1);
+        }
+    }
+
+    private void updateConjuredItem(int i) {
+        changeQualityOfItemBy(i, -2);
+
+        items[i].sellIn = items[i].sellIn - 1;
+
+        if (items[i].sellIn < 0) {
+            changeQualityOfItemBy(i, -2);
         }
     }
 
