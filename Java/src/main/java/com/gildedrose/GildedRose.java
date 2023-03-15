@@ -14,6 +14,8 @@ class GildedRose {
 
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
+            updateSellInValueForItem(i);
+
             switch (getItemGroup(items[i].name)) {
                 case BACKSTAGE_PASSES:
                     updateBackstagePassItem(i);
@@ -35,28 +37,23 @@ class GildedRose {
     }
 
     private void updateItemThatIncreasesQualityWithAge(int i) {
-        changeQualityOfItemBy(i, 1);
-
-        items[i].sellIn = items[i].sellIn - 1;
-
-        if (items[i].sellIn < 0) {
-            changeQualityOfItemBy(i, 1);
+        int change = 1;
+        if (items[i].sellIn >= 0) {
+            changeQualityOfItemBy(i, change);
+        } else {
+            changeQualityOfItemBy(i, 2 * change);
         }
     }
 
     private void updateBackstagePassItem(int i) {
-        if (items[i].sellIn < 6) {
+        if (items[i].sellIn < 0) {
+            items[i].quality = 0;
+        } else if (items[i].sellIn < 5) {
             changeQualityOfItemBy(i, 3);
-        } else if (items[i].sellIn < 11) {
+        } else if (items[i].sellIn < 10) {
             changeQualityOfItemBy(i, 2);
         } else {
             changeQualityOfItemBy(i, 1);
-        }
-
-        items[i].sellIn = items[i].sellIn - 1;
-
-        if (items[i].sellIn < 0) {
-            items[i].quality = 0;
         }
     }
 
@@ -71,23 +68,18 @@ class GildedRose {
     }
 
     private void updateRegularItem(int i) {
-        changeQualityOfItemBy(i, -1);
-
-        items[i].sellIn = items[i].sellIn - 1;
-
-        if (items[i].sellIn < 0) {
-            changeQualityOfItemBy(i, -1);
+        int change = -1;
+        if (items[i].sellIn >= 0) {
+            changeQualityOfItemBy(i, change);
+        } else {
+            changeQualityOfItemBy(i, 2 * change);
         }
     }
 
+    // "Conjured" items degrade in Quality twice as fast as normal items
     private void updateConjuredItem(int i) {
-        changeQualityOfItemBy(i, -2);
-
-        items[i].sellIn = items[i].sellIn - 1;
-
-        if (items[i].sellIn < 0) {
-            changeQualityOfItemBy(i, -2);
-        }
+        updateRegularItem(i);
+        updateRegularItem(i);
     }
 
     private void changeQualityOfItemBy(int i, int change) {
@@ -98,6 +90,12 @@ class GildedRose {
         }
         if (items[i].quality < MIN_QUALITY) {
             items[i].quality = MIN_QUALITY;
+        }
+    }
+
+    private void updateSellInValueForItem(int i) {
+        if (getItemGroup(items[i].name) != LEGENDARY) {
+            --items[i].sellIn;
         }
     }
 }
